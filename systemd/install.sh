@@ -56,6 +56,8 @@ ExecStart=/usr/sbin/watch.sh &
 ExecReload=/usr/sbin/watch.sh &
 ExecStop=/bin/kill -s TERM \$MAINPID
 WorkingDirectory=/tmp
+StandardOutput=syslog
+StandardError=inherit
 
 [Install]
 WantedBy=multi-user.target
