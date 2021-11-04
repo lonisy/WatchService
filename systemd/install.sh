@@ -64,13 +64,13 @@ cat >/usr/sbin/watch.sh<<EOF
 #!/usr/bin/env bash
 # Created by lilei at 2020/11/1
 config_file=/etc/watch/watch.ini
-watch_files=$(grep watch_file $config_file | grep -v ';' | sed 's/ //g' | sed 's/watch_file=//g' | sort -u |tr "\n" " ")
-/usr/bin/inotifywait -mq --timefmt '%Y-%m-%d %H:%M' --format '%T %w %f %e' -e open,close_write $watch_files | while read watch_line; do
-  result=$(echo $watch_line | grep "CLOSE_WRITE")
-  if [[ "$result" != "" ]]; then
-      watch_file=$(echo $watch_line | awk '{print $3}')
-      watch_command=$(cat $file | grep -v '^$' | grep -v ';' | grep -C 1 $watch_file | head -n 3 | grep "command" | sed 's/ = /=/g' | sed 's/command=//g')
-      $watch_command
+watch_files=\$(grep watch_file \$config_file | grep -v ';' | sed 's/ //g' | sed 's/watch_file=//g' | sort -u |tr "\n" " ")
+/usr/bin/inotifywait -mq --timefmt '\%Y-\%m-\%d \%H:\%M' --format '\%T \%w \%f \%e' -e open,close_write \$watch_files | while read watch_line; do
+  result=\$(echo \$watch_line | grep "CLOSE_WRITE")
+  if [[ "\$result" != "" ]]; then
+      watch_file=\$(echo \$watch_line | awk '{print \$3}')
+      watch_command=\$(cat \$file | grep -v '^\$' | grep -v ';' | grep -C 1 \$watch_file | head -n 3 | grep "command" | sed 's/ = /=/g' | sed 's/command=//g')
+      \$watch_command
   fi
 done
 EOF
