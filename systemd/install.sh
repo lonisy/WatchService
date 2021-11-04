@@ -33,6 +33,7 @@ fi
 
 # 写入配置文件
 mkdir -p /etc/watch
+
 cat >/etc/watch/watch.ini<<EOF
 ; inotifywait service config
 
@@ -40,6 +41,9 @@ cat >/etc/watch/watch.ini<<EOF
 watch_file=/data/app/demo
 command=du -sh
 EOF
+
+mkdir -p /data/app
+touch /data/app/demo
 
 # 写入 service 文件
 cat >/usr/lib/systemd/system/watch.service<<EOF
@@ -52,8 +56,8 @@ Type=simple
 Restart=always
 RestartSec=3s
 Environment=APP_ENV=release
-ExecStart=/usr/sbin/watch.sh
-ExecReload=/usr/sbin/watch.sh
+ExecStart=/usr/sbin/watch.sh &
+ExecReload=/usr/sbin/watch.sh &
 ExecStop=/bin/kill -s TERM \$MAINPID
 WorkingDirectory=/tmp
 
@@ -78,5 +82,17 @@ watch_files=\$(grep watch_file \$config_file | grep -v ';' | sed 's/ //g' | sed 
 done
 EOF
 
+chmod +x /usr/sbin/watch.sh
+
+echo "systemctl enable watch.service
+systemctl daemon-reload
+systemctl restart watch.service
+systemctl start watch.service
+systemctl status watch.service
+systemctl stop watch.service"
 
 # 启动服务
+systemctl daemon-reload
+systemctl enable watch.service
+systemctl start watch.service
+systemctl status watch.service
