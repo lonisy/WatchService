@@ -7,16 +7,16 @@ then
 fi
 
 if grep -i -q 'CentOS' /etc/redhat-release; then
-  echo "ok"
+  echo "is CentOS"
 else
-  echo "Centos !ok"
+  echo "CentOS !ok"
   exit 0
 fi
 
 if systemctl --version | grep -q 'systemd'; then
-  echo "ok"
+  echo "systemctl Installed"
 else
-  echo "systemd !ok"
+  echo "systemctl not Installed"
   exit 0
 fi
 
