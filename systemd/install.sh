@@ -52,7 +52,7 @@ Type=forking
 PIDFile=/var/run/watch.pid
 ExecStart=/usr/sbin/watch.sh
 ExecReload=/usr/sbin/watch.sh
-ExecStop=/bin/kill -s TERM $MAINPID
+ExecStop=/bin/kill -s TERM \$MAINPID
 
 [Install]
 WantedBy=multi-user.target
