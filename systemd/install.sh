@@ -6,10 +6,6 @@ then
   abort "Bash is required to interpret this script."
 fi
 
-# 检测系统环境
-# 检测是否支持 systemd
-# 检测是否安装了 inotifywait
-
 if grep -i -q 'CentOS' /etc/redhat-release; then
   echo "ok"
 else
@@ -25,13 +21,13 @@ else
 fi
 
 if ! type inotifywait >/dev/null 2>&1; then
-    echo '未安装';
+    echo 'inotifywait not Installed';
     yum install inotify-tools -y
 else
-    echo '已安装';
+    echo 'inotifywait Installed';
 fi
 
-# 写入配置文件
+# Write configuration file
 mkdir -p /etc/watch
 
 cat >/etc/watch/watch.ini<<EOF
@@ -45,7 +41,7 @@ EOF
 mkdir -p /data/app
 touch /data/app/demo
 
-# 写入 service 文件
+# Create systemd file
 cat >/usr/lib/systemd/system/watch.service<<EOF
 [Unit]
 Description=WatchService
@@ -66,7 +62,7 @@ WantedBy=multi-user.target
 
 EOF
 
-#
+# Create the main program file
 cat >/usr/sbin/watch.sh<<EOF
 #!/usr/bin/env bash
 # Created by lilei at 2020/11/1
@@ -91,7 +87,7 @@ systemctl start watch.service
 systemctl status watch.service
 systemctl stop watch.service"
 
-# 启动服务
+# Start service
 systemctl daemon-reload
 systemctl enable watch.service
 systemctl start watch.service
