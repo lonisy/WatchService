@@ -66,7 +66,7 @@ WantedBy=multi-user.target
 
 EOF
 
-# 写入 service 文件
+#
 cat >/usr/sbin/watch.sh<<EOF
 #!/usr/bin/env bash
 # Created by lilei at 2020/11/1
