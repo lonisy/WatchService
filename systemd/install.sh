@@ -49,7 +49,7 @@ touch /data/app/demo
 cat >/usr/lib/systemd/system/watch.service<<EOF
 [Unit]
 Description=WatchService
-Documentation=https://lilei.org.cn/
+Documentation=https://github.com/lonisy/WatchService
 
 [Service]
 Type=simple
