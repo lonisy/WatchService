@@ -32,6 +32,7 @@ else
 fi
 
 # 写入配置文件
+mkdir -p /etc/watch
 cat >/etc/watch/watch.ini<<EOF
 ; inotifywait service config
 
