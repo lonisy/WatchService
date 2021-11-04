@@ -48,11 +48,14 @@ Description=WatchService
 Documentation=https://lilei.org.cn/
 
 [Service]
-Type=forking
-PIDFile=/var/run/watch.pid
+Type=simple
+Restart=always
+RestartSec=3s
+Environment=APP_ENV=release
 ExecStart=/usr/sbin/watch.sh
 ExecReload=/usr/sbin/watch.sh
 ExecStop=/bin/kill -s TERM \$MAINPID
+WorkingDirectory=/tmp
 
 [Install]
 WantedBy=multi-user.target
