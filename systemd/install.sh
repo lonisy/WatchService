@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Created by itffind@gmail.com at 2021/11/4
 set -u
+echo "Check system information!"
 if [ -z "${BASH_VERSION:-}" ]
 then
   abort "Bash is required to interpret this script."
@@ -57,7 +58,8 @@ ExecReload=/usr/sbin/watch.sh &
 ExecStop=/bin/kill -s TERM \$MAINPID
 WorkingDirectory=/tmp
 StandardOutput=syslog
-StandardError=inherit
+StandardError=syslog
+;StandardError=inherit
 
 [Install]
 WantedBy=multi-user.target
