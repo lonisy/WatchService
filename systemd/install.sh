@@ -35,12 +35,11 @@ cat >/etc/watch/watch.ini<<EOF
 ; inotifywait service config
 
 [app]
-watch_file=/data/app/demo
+watch_file=/tmp/_app
 command=du -sh
 EOF
 
-mkdir -p /data/app
-touch /data/app/demo
+touch /tmp/_app
 
 # Create systemd file
 cat >/usr/lib/systemd/system/watch.service<<EOF
