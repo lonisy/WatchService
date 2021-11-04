@@ -11,10 +11,10 @@ fi
 # 检测是否安装了 inotifywait
 
 if grep -q 'Centos' /etc/redhat-release; then
-  echo "ok"
-else
   echo "Centos !ok"
   exit 0
+else
+  echo "ok"
 fi
 
 if systemctl --version | grep -q 'systemd'; then
