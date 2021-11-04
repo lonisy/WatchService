@@ -10,7 +10,7 @@ fi
 # 检测是否支持 systemd
 # 检测是否安装了 inotifywait
 
-if grep -qi 'Centos' /etc/redhat-release; then
+if grep -i -q 'CentOS' /etc/redhat-release; then
   echo "ok"
 else
   echo "Centos !ok"
