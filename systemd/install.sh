@@ -71,8 +71,10 @@ watch_files=\$(grep watch_file \$config_file | grep -v ';' | sed 's/ //g' | sed 
 /usr/bin/inotifywait -mq --timefmt '%Y-%m-%d %H:%M' --format '%T %w %f %e' -e open,close_write \$watch_files | while read watch_line; do
   result=\$(echo \$watch_line | grep "CLOSE_WRITE")
   if [[ "\$result" != "" ]]; then
+      echo "\$result"
       watch_file=\$(echo \$watch_line | awk '{print \$3}')
       watch_command=\$(cat \$file | grep -v '^\$' | grep -v ';' | grep -C 1 \$watch_file | head -n 3 | grep "command" | sed 's/ = /=/g' | sed 's/command=//g')
+      echo "\$watch_command"
       \$watch_command
   fi
 done
