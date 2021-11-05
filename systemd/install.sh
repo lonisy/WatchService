@@ -35,9 +35,9 @@ cat >/etc/watch/watch.ini<<EOF
 ; inotifywait service config
 
 [app]
-watch_dir=/tmp
-watch_file=/tmp/_app
-command=du -sh
+watch_dir=/etc/watch
+watch_file=/etc/watch/watch.ini
+command=systemctl restart watch.service
 EOF
 
 touch /tmp/_app
