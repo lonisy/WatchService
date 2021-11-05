@@ -98,7 +98,7 @@ systemctl status watch.service
 systemctl stop watch.service";
 
 sleep 2
-# Start service
+
 echo "Start service"
 systemctl daemon-reload
 systemctl enable watch.service
