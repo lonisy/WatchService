@@ -35,6 +35,7 @@ cat >/etc/watch/watch.ini<<EOF
 ; inotifywait service config
 
 [app]
+watch_dir=/tmp
 watch_file=/tmp/_app
 command=du -sh
 EOF
@@ -70,13 +71,13 @@ cat >/usr/sbin/watch.sh<<EOF
 #!/usr/bin/env bash
 # Created by lilei at 2020/11/1
 config_file=/etc/watch/watch.ini
-watch_files=\$(grep watch_file \$config_file | grep -v ';' | sed 's/ //g' | sed 's/watch_file=//g' | sort -u |tr "\n" " ")
-/usr/bin/inotifywait -mq --timefmt '%Y-%m-%d %H:%M' --format '%T %w %f %e' -e create,delete,close_write,attrib,moved_to \$watch_files | while read watch_line; do
-  result=\$(echo \$watch_line | grep "CLOSE_WRITE")
+watch_dirs=\$(grep watch_dir \$config_file | grep -v ';' | sed 's/ //g' | sed 's/watch_dir=//g' | sort -u |tr "\n" " ")
+/usr/bin/inotifywait -mrq --timefmt '%Y-%m-%d %H:%M' --format '%T %w %f %e' -e create,delete,close_write,attrib,moved_to \$watch_dirs | while read watch_line; do
+  result=\$(echo \$watch_line | grep -E "CLOSE_WRITE|MOVED_TO")
   echo \$result
   if [[ "\$result" != "" ]]; then
-      watch_file=\$(echo \$watch_line | awk '{print \$3}')
-      watch_command=\$(cat \$config_file | grep -v '^\$' | grep -v ';' | grep -C 1 \$watch_file | head -n 3 | grep "command" | sed 's/ = /=/g' | sed 's/command=//g')
+      watch_file=\$(echo \$watch_line | awk '{print \$3\$4}')
+      watch_command=\$(cat \$config_file | grep -v '^\$' | grep -v ';' | grep -C 2 \$watch_file | head -n 5 | grep "command" | head -n 1 | sed 's/ = /=/g' | sed 's/command=//g')
       echo "\$watch_command"
       \$watch_command
   fi
@@ -85,13 +86,18 @@ EOF
 
 chmod +x /usr/sbin/watch.sh
 
-echo "systemctl enable watch.service
+echo "
+cat /usr/lib/systemd/system/watch.service
+cat /etc/watch/watch.ini
+cat /usr/sbin/watch.sh
+systemctl enable watch.service
 systemctl daemon-reload
 systemctl restart watch.service
 systemctl start watch.service
 systemctl status watch.service
 systemctl stop watch.service"
 
+sleep 2
 # Start service
 systemctl daemon-reload
 systemctl enable watch.service
