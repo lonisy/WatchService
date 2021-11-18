@@ -28,6 +28,12 @@ else
     echo 'inotifywait Installed';
 fi
 
+
+if [[ -f "/etc/watch/watch.ini" ]];then
+  echo "/etc/watch/watch.ini existed!"
+  exit 0
+fi
+
 # Write configuration file
 mkdir -p /etc/watch
 
